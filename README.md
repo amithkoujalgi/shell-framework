@@ -66,16 +66,16 @@ Adding a custom command is as easy as pie. It goes like this:
 
 * Now that you have a command class Curl, lets add this to the shell application.
 
-	public class AppMain {
-		public static void main(String[] args) throws Exception {
-			Application app = new Application();
-			app.addCommand(new Curl("curl", 1)); // Add the command to app. Curl is the base command and numner of params it takes is 1
-			app.setStartupInfo("Custom shell v0.01");
-			app.setTempDirectory(new File("path\to\your temp\directory")); // set the temporary directory for saving history of previously executed commands
-			app.setPrompt("shell>"); // set your prompt text
-			app.interpret();
+		public class AppMain {
+			public static void main(String[] args) throws Exception {
+				Application app = new Application();
+				app.addCommand(new Curl("curl", 1)); // Add the command to app. Curl is the base command and numner of params it takes is 1
+				app.setStartupInfo("Custom shell v0.01");
+				app.setTempDirectory(new File("path\to\your temp\directory")); // set the temporary directory for saving history of previously executed commands
+				app.setPrompt("shell>"); // set your prompt text
+				app.interpret();
+			}
 		}
-	}
 	
 * And you're done! 
 * Just run the main class and voila! You have your shell with your custom commands.
