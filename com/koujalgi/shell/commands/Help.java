@@ -28,7 +28,7 @@ public class Help extends AbstractCommand {
 			if (c instanceof Help) {
 				continue;
 			} else
-				System.out.println(c.getBaseCommand() + "\t"
+				System.out.println(c.getBaseCommand() + "\t\t"
 						+ c.getDescription());
 		}
 	}
