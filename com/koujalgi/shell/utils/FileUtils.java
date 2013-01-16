@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -34,6 +35,19 @@ public class FileUtils {
 			}
 		}
 		return true;
+	}
+
+	public static String readFileFromClassPath(Class<?> clazz, String fileName)
+			throws IOException {
+		String ret = "";
+		String str = "";
+		BufferedReader br = new BufferedReader(new InputStreamReader(clazz
+				.getClassLoader().getResourceAsStream(fileName)));
+		while ((str = br.readLine()) != null) {
+			ret += str + "\n";
+		}
+		br.close();
+		return ret;
 	}
 
 	public static void writeToFile(String filename, String contents)
