@@ -39,26 +39,26 @@ Adding a custom command is as easy as pie. It goes like this:
 	
 * Lets add a custom command called Curl (which is a command-line http request tool in Linux). So, the class Curl looks like this:
 
-	public class Curl extends AbstractCommand {
-		public Curl(String baseCommand, int params) {
-			super(baseCommand, params);
+		public class Curl extends AbstractCommand {
+			public Curl(String baseCommand, int params) {
+				super(baseCommand, params);
+			}
+			
+			@Override
+			public void execute() {
+				System.out.println("running curl command...");
+			}
+	
+			@Override
+			public String getUsage() {
+				return "curl [method] [host]";
+			}
+	
+			@Override
+			public String getDescription() {
+				return "make http requests from command-line";
+			}
 		}
-		
-		@Override
-		public void execute() {
-			System.out.println("running curl command...");
-		}
-
-		@Override
-		public String getUsage() {
-			return "curl [method] [host]";
-		}
-
-		@Override
-		public String getDescription() {
-			return "make http requests from command-line";
-		}
-	}
 
 * Now that you have a command class Curl, lets add this to the shell application.
 
