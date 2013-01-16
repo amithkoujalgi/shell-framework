@@ -10,7 +10,7 @@ You can add your custom shell commands into the shell application easily.
 * **Definition flexibility**: Define your own commands easily by extending Abstract command class.
 * **Simple configuration**: 1 line to add a new command to the existing shell.
 * **Clear, simple structure**: Designed to add new commands to the shell without having to worry about the phases of execution
-* **Maitain history**: Get the history of commands executed previously.
+* **Maintain history**: Get the history of commands executed previously.
 
 
 ## Installation/Integration
