@@ -3,7 +3,7 @@ package com.koujalgi.shell.core;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.koujalgi.shell.core.utils.FileUtils;
+import com.koujalgi.shell.utils.FileUtils;
 
 public class BatchExecutor {
 	private ArrayList<AbstractCommand> commands = new ArrayList<AbstractCommand>();

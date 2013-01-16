@@ -1,4 +1,4 @@
-package com.koujalgi.shell.core.utils;
+package com.koujalgi.shell.utils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
