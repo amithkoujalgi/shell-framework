@@ -81,5 +81,5 @@ Adding a custom command is as easy as pie. It goes like this:
 * Just run the main class and voila! You have your shell with your custom commands.
 
 ## Enhancements
-* The shell app is not thread-safe. I'll start working on it.
+* The shell app is not thread-safe. I shall start working on it soon.
 * It doesn't allow you to pass variable number of params. While running a command, it has to have the number of params you had defined while creating the command
