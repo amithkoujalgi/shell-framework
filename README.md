@@ -22,19 +22,19 @@ You can add your custom shell commands into the shell application easily.
 
 ## Sample command integration
 
-	Adding a custom command is as easy as pie. It goes like this:
-	If you want a command called 'curl', you create the Curl class in this way.
-	It has to extend the class AbstractCommand.
-	It has to have a constructor with 2 params:
-		- String baseCommand
-		- int params
+Adding a custom command is as easy as pie. It goes like this:
+* If you want a command called 'curl', you create the Curl class in this way.
+* It has to extend the class AbstractCommand.
+* It has to have a constructor with 2 params:
+	String baseCommand
+	int params
 		
-	The constructor has to invoke the superclass' constructor: super(baseCommand, params)
-
-	It has to override 3 methods:
-		- execute
-		- getDescription
-		- getUsage
+* The constructor has to invoke the superclass' constructor: 
+	super(baseCommand, params)
+* It has to override 3 methods:
+	execute
+	getDescription
+	getUsage
 
 	
 * Lets add a custom command called Curl (which is a command-line http request tool in Linux). So, the class Curl looks like this:
