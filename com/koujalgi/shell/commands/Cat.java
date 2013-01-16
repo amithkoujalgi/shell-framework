@@ -2,8 +2,8 @@ package com.koujalgi.shell.commands;
 
 import com.koujalgi.shell.core.AbstractCommand;
 import com.koujalgi.shell.core.EnvironmentVariable;
-import com.koujalgi.shell.core.FileUtils;
 import com.koujalgi.shell.core.ParamParser;
+import com.koujalgi.shell.core.utils.FileUtils;
 
 public class Cat extends AbstractCommand {
 

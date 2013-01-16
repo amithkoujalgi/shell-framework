@@ -3,6 +3,8 @@ package com.koujalgi.shell.core;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.koujalgi.shell.core.utils.FileUtils;
+
 public class BatchExecutor {
 	private ArrayList<AbstractCommand> commands = new ArrayList<AbstractCommand>();
 	private String prompt = "#";
