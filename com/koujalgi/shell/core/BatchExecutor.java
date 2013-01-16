@@ -52,7 +52,7 @@ public class BatchExecutor {
 			cmds = FileUtils.getFileContents(this.batchFile.getAbsolutePath())
 					.split("\n");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("[Error]: " + e.getMessage());
 		}
 		return cmds;
 	}
