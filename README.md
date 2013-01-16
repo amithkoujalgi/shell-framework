@@ -1,66 +1,81 @@
-shell-framework
-===============
+# Shell Framework
 
-A framework to create your own shell in Java.
+## What is this?
+
+A framework to create your own shell in Java. 
 You can add your custom shell commands into the shell application easily.
 
-Adding a custom command is as easy as pie. It goes like this:
+## Features
 
-If you want a command called 'echo', you create the Echo class in this way.
-It has to extend the class AbstractCommand.
-It has to have a constructor with 2 params:
-- String baseCommand
-- int params
-The constructor has to invoke the superclass' constructor: super(baseCommand, params)
+* **Definition flexibility**: Define your own commands easily by extending Abstract command class.
+* **Simple configuration**: 1 line to add a new command to the existing shell.
+* **Clear, simple structure**: Designed to add new commands to the shell without having to worry about the phases of execution
+* **Maitain history**: Get the history of commands executed previously.
 
-It has to override 3 methods:
-- execute
-- getDescription
-- getUsage
 
-So, the class Echo looks like:
+## Installation/Integration
+	1. Download/clone the repo into an appropriate folder
+	2. Add custom commands in the src directory.
+	3. Add command/s to the application.
+	4. Run the application's interpreter.
+	5. Reward yourself with a refreshing beverage. 
 
-public class Echo extends AbstractCommand {
-        // this constructor is, mandatory!
- public Echo (String baseCommand, int params) {
- super(baseCommand, params);
- }
+## Sample command integration
 
- @Override
- public void execute() {
- String echoText = super.getCommandParser().getParams().get(0);
- System.out.println(echoText);
- }
+	Adding a custom command is as easy as pie. It goes like this:
+	If you want a command called 'curl', you create the Curl class in this way.
+	It has to extend the class AbstractCommand.
+	It has to have a constructor with 2 params:
+		- String baseCommand
+		- int params
+		
+	The constructor has to invoke the superclass' constructor: super(baseCommand, params)
 
- @Override
- public String getDescription() {
- return "echoes the text to the console";
- }
+	It has to override 3 methods:
+		- execute
+		- getDescription
+		- getUsage
 
- @Override
- public String getUsage() {
- return "echo [text-to-be-echoed]";
- }
-}
+	
+* Lets add a custom command called Curl (which is a command-line http request tool in Linux). So, the class Curl looks like this:
 
-Now that you have a command class Echo, lets add this to the shell.
+	public class Curl extends AbstractCommand {
+		public Curl(String baseCommand, int params) {
+			super(baseCommand, params);
+		}
+		
+		@Override
+		public void execute() {
+			System.out.println("running curl command...");
+		}
 
-public class AppMain {
-	public static void main(String[] args) throws Exception {
-		Application app = new Application();
-		// add the command to your shell app
-		// 'echo' is the base command (the text with which the command should start)
-		// 1 is the nummber of parameters it should have. Here, echo command takes one param (the text it should echo)
-		app.addCommand(new Echo("echo", 1));
-		// you can add more commands too
-		// set the temp directory path. This is for saving the history of the previously executed commands
-		app.setTempDirectory(new File("path/to/temporary/directory"));
-		// set the prompt text. (Optional)
-		app.setPrompt("shell>");
-		// all set! start interpreting the commands right away!
-		app.interpret();
+		@Override
+		public String getUsage() {
+			return "curl [method] [host]";
+		}
+
+		@Override
+		public String getDescription() {
+			return "make http requests from command-line";
+		}
 	}
-}
 
-And you're done! 
-Just run the main class and voila! You have your shell with your custom commands.
+* Now that you have a command class Curl, lets add this to the shell application.
+
+	public class AppMain {
+		public static void main(String[] args) throws Exception {
+			Application app = new Application();
+			app.addCommand(new Curl("curl", 1)); // Add the command to app. Curl is the base command and numner of params it takes is 1
+			app.setStartupInfo("Custom shell v0.01");
+			app.setTempDirectory(new File("path\to\your temp\directory")); // set the temporary directory for saving history of previously executed commands
+			app.setPrompt("shell>"); // set your prompt text
+			app.interpret();
+		}
+	}
+	
+* And you're done! 
+* Just run the main class and voila! You have your shell with your custom commands.
+
+## Enhancements
+* The shell app is not thread-safe. I'll start working on it.
+* It doesn't allow you to pass variable number of params. While running a command, it has to have the number of params you had defined while creating the command
