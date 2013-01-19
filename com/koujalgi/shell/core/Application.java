@@ -23,6 +23,7 @@ public class Application {
 	private String startupInfo = "Shell v.01" + "\n"
 			+ "Type help to view usage";
 	private boolean terminate = false;
+	private boolean historyEnabled = true;
 
 	public void addCommand(AbstractCommand cmd) throws Exception {
 		if (cmd == null) {
@@ -42,6 +43,10 @@ public class Application {
 
 	public ArrayList<EnvironmentVariable> getEnvVars() {
 		return envVars;
+	}
+
+	public void disableHistory() {
+		this.historyEnabled = false;
 	}
 
 	public void terminate() {
@@ -94,8 +99,10 @@ public class Application {
 						.equals("")) {
 					continue;
 				}
-				history.add(read);
-				writeHistory(read);
+				if (historyEnabled) {
+					history.add(read);
+					writeHistory(read);
+				}
 				AbstractCommand cmd = find(read);
 				exec(cmd);
 			} catch (Exception e) {
@@ -112,7 +119,9 @@ public class Application {
 		commands.add(new Batch("batch", 1));
 		History hist = new History("history", 0);
 		hist.setAppContext(this);
-		commands.add(hist);
+		if (historyEnabled) {
+			commands.add(hist);
+		}
 		commands.add(new Exit("exit", 0));
 		Help help = new Help("help", 0);
 		help.setCommands(commands);
