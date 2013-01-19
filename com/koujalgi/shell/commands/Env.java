@@ -33,7 +33,7 @@ public class Env extends AbstractCommand {
 
 	@Override
 	public String getDescription() {
-		return "gets a specific env var \n\t(Or all env vars if param is '$')";
+		return "gets a specific env var \n\t\t(Or all env vars if param is '$')";
 	}
 
 }
