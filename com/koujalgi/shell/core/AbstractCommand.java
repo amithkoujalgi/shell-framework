@@ -7,14 +7,15 @@ import com.koujalgi.shell.interfaces.ICommand;
 public abstract class AbstractCommand implements ICommand {
 	private CommandParser parser;
 	private String baseCommand = "";
-	private int numParams = 0;
+	private int minParams = 0;
 	private Application app;
 
 	public AbstractCommand(String baseCommand, int params) {
 		this.baseCommand = baseCommand;
-		this.numParams = params;
+		this.minParams = params;
 	}
 
+	@Override
 	public void setAppContext(Application app) {
 		this.app = app;
 	}
@@ -23,6 +24,7 @@ public abstract class AbstractCommand implements ICommand {
 		return app;
 	}
 
+	@Override
 	public void setEnvVar(Object variable, Object value) {
 		EnvironmentVariable oldVariable = getEnvVar(variable);
 		if (oldVariable == null) {
@@ -35,6 +37,7 @@ public abstract class AbstractCommand implements ICommand {
 		}
 	}
 
+	@Override
 	public EnvironmentVariable getEnvVar(Object variable) {
 		ArrayList<EnvironmentVariable> vars;
 		try {
@@ -61,18 +64,22 @@ public abstract class AbstractCommand implements ICommand {
 		return vars;
 	}
 
+	@Override
 	public void terminate() {
 		app.terminate();
 	}
 
+	@Override
 	public boolean isValid() {
-		return hasBaseCommand() && parser.getParamCount() == numParams;
+		return hasBaseCommand() && parser.getParamCount() >= minParams;
 	}
 
+	@Override
 	public void setCommandString(String command) {
 		parser = new CommandParser(command);
 	}
 
+	@Override
 	public String getBaseCommand() {
 		return baseCommand;
 	}
@@ -85,6 +92,7 @@ public abstract class AbstractCommand implements ICommand {
 		return this.app.getCommands();
 	}
 
+	@Override
 	public boolean hasBaseCommand() {
 		return parser.getBaseCommand().equals(baseCommand);
 	}
