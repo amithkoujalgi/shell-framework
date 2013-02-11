@@ -18,6 +18,28 @@ public class CommandParser {
 		init();
 	}
 
+	public boolean hasBalancedQuotes() {
+		return getQuotesCount() % 2 == 0;
+	}
+
+	private int getQuotesCount() {
+		if (!this.command.contains("\"")) {
+			return 0;
+		}
+		char ch = '"';
+		HashMap<Character, Integer> map = new HashMap<Character, Integer>();
+		for (int i = 0; i < this.command.length(); i++) {
+			char c = this.command.charAt(i);
+			Integer val = map.get(new Character(c));
+			if (val != null) {
+				map.put(c, new Integer(val + 1));
+			} else {
+				map.put(c, 1);
+			}
+		}
+		return map.get(ch);
+	}
+
 	/**
 	 * Parse command and push params to param-list
 	 */
@@ -27,29 +49,22 @@ public class CommandParser {
 			this.baseCommand = command;
 			return;
 		}
-		HashMap<Integer, String> paramPositionMap = new HashMap<>();
+		HashMap<Integer, String> paramPositionMap = new HashMap<Integer, String>();
 		this.baseCommand = command.substring(0, command.indexOf(" ")).trim();
 		String tmp = command.substring(command.indexOf(" "), command.length())
 				.trim();
-		Pattern quotedParamPattern = Pattern.compile(" *\"[^\"]+\"");
+		Pattern quotedParamPattern = Pattern
+				.compile("\\s*(\"[^\"]+\"|[^\\s\"]+)");
 		Matcher matcher = quotedParamPattern.matcher(tmp);
 		// fetch all params within double quotes
 		while (matcher.find()) {
 			String param = matcher.group();
 			if (!param.replaceAll("\"", "").trim().equals("")) {
 				param = param.replaceAll("\"", "").trim();
-				paramPositionMap.put(command.indexOf(param), param);
+				// prevMatch += tmp.indexOf(param);
+				paramPositionMap.put(matcher.start(), param);
 			}
-			tmp = tmp.replace(param, "").replaceAll("\\s+", " ");
-		}
-		// fetch all params separated by spaces
-		String[] params = tmp.split(" ");
-		for (String param : params) {
-			if (!param.replaceAll("\"", "").trim().equals("")) {
-				param = param.replaceAll("\"", "").trim();
-				paramPositionMap.put(command.indexOf(param), param);
-			}
-			tmp = tmp.replace(param, "").replaceAll("\\s+", " ");
+			tmp = tmp.replaceFirst(param, "").replaceAll("\\s+", " ");
 		}
 		paramList = sortMapByIntegerKey(paramPositionMap);
 	}

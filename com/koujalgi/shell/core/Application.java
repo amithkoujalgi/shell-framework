@@ -13,13 +13,16 @@ import com.koujalgi.shell.commands.Help;
 import com.koujalgi.shell.commands.History;
 import com.koujalgi.shell.commands.Now;
 import com.koujalgi.shell.commands.Set;
+import com.rzt.shell.exceptions.InvalidCommandException;
+import com.rzt.shell.exceptions.InvalidCommandFormatException;
+import com.rzt.shell.exceptions.NullCommandException;
+import com.rzt.shell.exceptions.UnbalancedQuotesException;
 
 public class Application {
 	private ArrayList<AbstractCommand> commands = new ArrayList<AbstractCommand>();
 	private ArrayList<EnvironmentVariable> envVars = new ArrayList<EnvironmentVariable>();
 	private ArrayList<String> history = new ArrayList<String>();
 	private String prompt = "Shell>";
-	private File tempDirectory;
 	private String startupInfo = "Shell v.01" + "\n"
 			+ "Type help to view usage";
 	private boolean terminate = false;
@@ -27,7 +30,7 @@ public class Application {
 
 	public void addCommand(AbstractCommand cmd) throws Exception {
 		if (cmd == null) {
-			throw new Exception("Cant add a null command");
+			throw new NullCommandException("Cant add a null command");
 		} else {
 			commands.add(cmd);
 		}
@@ -57,10 +60,6 @@ public class Application {
 		this.startupInfo = startupInfo;
 	}
 
-	public void setTempDirectory(File tempDirectory) {
-		this.tempDirectory = tempDirectory;
-	}
-
 	public void setPrompt(String prompt) {
 		this.prompt = prompt;
 	}
@@ -70,13 +69,14 @@ public class Application {
 	}
 
 	private void writeHistory(String content) {
-		if (!tempDirectory.exists()) {
-			tempDirectory.mkdir();
+		File logDir = new File("logs");
+		if (!logDir.exists()) {
+			logDir.mkdir();
 		}
-		File histroyFile = new File(tempDirectory + File.separator
-				+ "history.txt");
+		File histroyFile = new File(logDir.getAbsolutePath() + File.separator
+				+ "command-history.txt");
 		try {
-			Shell.appendFile(histroyFile, content);
+			ShellIO.appendFile(histroyFile, content);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -91,7 +91,7 @@ public class Application {
 		showStartUpInfo();
 		do {
 			try {
-				String read = Shell.read(prompt);
+				String read = ShellIO.read(prompt);
 				if (read == null) {
 					continue;
 				}
@@ -106,7 +106,7 @@ public class Application {
 				AbstractCommand cmd = find(read);
 				exec(cmd);
 			} catch (Exception e) {
-				System.out.println("[Error]: " + e.getMessage());
+				System.out.println(e.getMessage());
 				// e.printStackTrace();
 			}
 		} while (!terminate);
@@ -135,12 +135,13 @@ public class Application {
 
 	private void exec(AbstractCommand command) throws Exception {
 		if (command == null) {
-			throw new Exception("Invalid command");
+			throw new InvalidCommandException();
+		} else if (!command.getCommandParser().hasBalancedQuotes()) {
+			throw new UnbalancedQuotesException();
 		} else if (command.isValid()) {
 			command.execute();
 		} else {
-			System.out.println("Command format invalid");
-			System.out.println("Usage: " + command.getUsage());
+			throw new InvalidCommandFormatException(command.getUsage());
 		}
 	}
 

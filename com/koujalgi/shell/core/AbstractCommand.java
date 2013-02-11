@@ -71,7 +71,8 @@ public abstract class AbstractCommand implements ICommand {
 
 	@Override
 	public boolean isValid() {
-		return hasBaseCommand() && parser.getParamCount() >= minParams;
+		return hasBaseCommand() && parser.getParamCount() >= minParams
+				&& parser.hasBalancedQuotes();
 	}
 
 	@Override
