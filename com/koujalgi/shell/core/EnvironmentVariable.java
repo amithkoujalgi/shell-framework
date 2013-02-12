@@ -1,15 +1,7 @@
 package com.koujalgi.shell.core;
 
 public class EnvironmentVariable {
-	private Object variable, value;
-
-	public Object getVariable() {
-		return variable;
-	}
-
-	public void setVariable(Object variable) {
-		this.variable = variable;
-	}
+	private Object value, variableName;
 
 	public Object getValue() {
 		return value;
@@ -18,4 +10,13 @@ public class EnvironmentVariable {
 	public void setValue(Object value) {
 		this.value = value;
 	}
+
+	public Object getVariableName() {
+		return variableName;
+	}
+
+	public void setVariableName(Object variableName) {
+		this.variableName = variableName;
+	}
+
 }

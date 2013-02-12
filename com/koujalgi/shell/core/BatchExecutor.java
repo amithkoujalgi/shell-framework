@@ -3,14 +3,14 @@ package com.koujalgi.shell.core;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.koujalgi.shell.exceptions.InvalidCommandException;
+import com.koujalgi.shell.exceptions.InvalidCommandFormatException;
+import com.koujalgi.shell.exceptions.UnbalancedQuotesException;
 import com.koujalgi.shell.utils.FileUtils;
-import com.rzt.shell.exceptions.InvalidCommandException;
-import com.rzt.shell.exceptions.InvalidCommandFormatException;
-import com.rzt.shell.exceptions.UnbalancedQuotesException;
 
 public class BatchExecutor {
 	private ArrayList<AbstractCommand> commands = new ArrayList<AbstractCommand>();
-	private String prompt = "#";
+	private String prompt = "#>";
 	private Application appContext;
 	private File batchFile;
 
@@ -36,16 +36,26 @@ public class BatchExecutor {
 					System.out.println(prompt + c);
 					AbstractCommand cmd = null;
 					try {
+						// find and execute command
+						c = transformAsReadable(c);
 						cmd = find(c);
 						exec(cmd);
 					} catch (Exception e) {
 						System.out.println("Failed to run command '" + c
-								+ "'. Message: " + e.getMessage());
-						e.printStackTrace();
+								+ "'. \n[Reason]: " + e.getMessage());
+						// e.printStackTrace();
 					}
 				}
 			}
 		}
+	}
+
+	private String transformAsReadable(String str) {
+		return str.replace("\\\\", "\\").replace("\\N", "\\\\N")
+				.replace("\\T", "\\\\T").replace("\\B", "\\\\B")
+				.replace("\\F", "\\\\F").replace("\\R", "\\\\R")
+				.replace("\\U", "\\\\U").replace("\\i", "\\\\i")
+				.replace("\\'", "\\\\'");
 	}
 
 	private String[] getCmdArray() {
@@ -54,7 +64,6 @@ public class BatchExecutor {
 			cmds = FileUtils.getFileContents(this.batchFile.getAbsolutePath())
 					.split("\n");
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 		return cmds;

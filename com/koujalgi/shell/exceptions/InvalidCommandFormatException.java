@@ -1,4 +1,4 @@
-package com.rzt.shell.exceptions;
+package com.koujalgi.shell.exceptions;
 
 public class InvalidCommandFormatException extends Exception {
 

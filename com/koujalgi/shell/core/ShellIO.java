@@ -3,11 +3,11 @@ package com.koujalgi.shell.core;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.nio.file.Files;
 
 public class ShellIO {
 
@@ -29,7 +29,7 @@ public class ShellIO {
 				.replace("\\N", "\\\\N").replace("\\T", "\\\\T")
 				.replace("\\B", "\\\\B").replace("\\F", "\\\\F")
 				.replace("\\R", "\\\\R").replace("\\U", "\\\\U")
-				.replace("\\'", "\\\\'");
+				.replace("\\i", "\\\\i").replace("\\'", "\\\\'");
 		return (transformed);
 		// return readString;
 	}
@@ -67,9 +67,10 @@ public class ShellIO {
 		} else {
 			file.createNewFile();
 		}
-		PrintWriter out = new PrintWriter(new FileWriter(file), true);
-		out.print(content);
-		out.flush();
-		out.close();
+		FileOutputStream fop = new FileOutputStream(file);
+		byte[] contentInBytes = Files.readAllBytes(file.toPath());
+		fop.write(contentInBytes);
+		fop.flush();
+		fop.close();
 	}
 }

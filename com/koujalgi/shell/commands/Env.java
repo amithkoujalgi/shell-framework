@@ -19,14 +19,15 @@ public class Env extends AbstractCommand {
 		Object var = super.getCommandParser().getParams().get(0);
 		if (var.equals("$")) {
 			for (EnvironmentVariable v : super.getAllEnvVars()) {
-				System.out.println(v.getVariable() + "=" + v.getValue());
+				System.out.println(v.getVariableName() + "=" + v.getValue());
 			}
 		} else {
 			EnvironmentVariable env = super.getEnvVar(var);
 			if (env == null) {
 				System.out.println("env var '" + var + "' not set");
 			} else {
-				System.out.println(env.getVariable() + "=" + env.getValue());
+				System.out
+						.println(env.getVariableName() + "=" + env.getValue());
 			}
 		}
 	}

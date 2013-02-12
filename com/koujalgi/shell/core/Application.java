@@ -13,10 +13,10 @@ import com.koujalgi.shell.commands.Help;
 import com.koujalgi.shell.commands.History;
 import com.koujalgi.shell.commands.Now;
 import com.koujalgi.shell.commands.Set;
-import com.rzt.shell.exceptions.InvalidCommandException;
-import com.rzt.shell.exceptions.InvalidCommandFormatException;
-import com.rzt.shell.exceptions.NullCommandException;
-import com.rzt.shell.exceptions.UnbalancedQuotesException;
+import com.koujalgi.shell.exceptions.InvalidCommandException;
+import com.koujalgi.shell.exceptions.InvalidCommandFormatException;
+import com.koujalgi.shell.exceptions.NullCommandException;
+import com.koujalgi.shell.exceptions.UnbalancedQuotesException;
 
 public class Application {
 	private ArrayList<AbstractCommand> commands = new ArrayList<AbstractCommand>();
@@ -58,6 +58,13 @@ public class Application {
 	 */
 	public ArrayList<EnvironmentVariable> getEnvironmentVariables() {
 		return envVars;
+	}
+
+	/**
+	 * get prompt string
+	 */
+	public String getPrompt() {
+		return prompt;
 	}
 
 	/**
@@ -136,7 +143,6 @@ public class Application {
 				AbstractCommand cmd = find(read);
 				exec(cmd);
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
 				e.printStackTrace();
 			}
 		} while (!terminate);

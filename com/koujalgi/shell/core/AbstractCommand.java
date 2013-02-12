@@ -29,8 +29,8 @@ public abstract class AbstractCommand implements ICommand {
 		EnvironmentVariable oldVariable = getEnvVar(variable);
 		if (oldVariable == null) {
 			oldVariable = new EnvironmentVariable();
-			oldVariable.setVariable(variable);
 			oldVariable.setValue(value);
+			oldVariable.setVariableName(variable);
 			this.app.getEnvironmentVariables().add(oldVariable);
 		} else {
 			oldVariable.setValue(value);
@@ -47,7 +47,7 @@ public abstract class AbstractCommand implements ICommand {
 		}
 		EnvironmentVariable ret = null;
 		for (EnvironmentVariable v : vars) {
-			if (v.getVariable().equals(variable)) {
+			if (v.getVariableName().equals(variable)) {
 				ret = v;
 			}
 		}
