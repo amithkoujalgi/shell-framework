@@ -4,6 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.koujalgi.shell.utils.FileUtils;
+import com.rzt.shell.exceptions.InvalidCommandException;
+import com.rzt.shell.exceptions.InvalidCommandFormatException;
+import com.rzt.shell.exceptions.UnbalancedQuotesException;
 
 public class BatchExecutor {
 	private ArrayList<AbstractCommand> commands = new ArrayList<AbstractCommand>();
@@ -36,9 +39,8 @@ public class BatchExecutor {
 						cmd = find(c);
 						exec(cmd);
 					} catch (Exception e) {
-						System.out.println("[Error]: Failed to run command '"
-								+ c + "'");
-						// System.out.println("Why: " + e.getMessage());
+						System.out.println("Failed to run command '" + c
+								+ "'. Message: " + e.getMessage());
 						e.printStackTrace();
 					}
 				}
@@ -52,19 +54,21 @@ public class BatchExecutor {
 			cmds = FileUtils.getFileContents(this.batchFile.getAbsolutePath())
 					.split("\n");
 		} catch (Exception e) {
-			System.out.println("[Error]: " + e.getMessage());
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return cmds;
 	}
 
 	private void exec(AbstractCommand command) throws Exception {
 		if (command == null) {
-			throw new Exception("Invalid command");
+			throw new InvalidCommandException();
+		} else if (!command.getCommandParser().hasBalancedQuotes()) {
+			throw new UnbalancedQuotesException();
 		} else if (command.isValid()) {
 			command.execute();
 		} else {
-			System.out.println("Command format invalid");
-			System.out.println("Usage: " + command.getUsage());
+			throw new InvalidCommandFormatException(command.getUsage());
 		}
 	}
 

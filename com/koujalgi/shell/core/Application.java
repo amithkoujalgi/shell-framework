@@ -28,6 +28,9 @@ public class Application {
 	private boolean terminate = false;
 	private boolean historyEnabled = true;
 
+	/**
+	 * add a command to shell
+	 */
 	public void addCommand(AbstractCommand cmd) throws Exception {
 		if (cmd == null) {
 			throw new NullCommandException("Cant add a null command");
@@ -36,34 +39,58 @@ public class Application {
 		}
 	}
 
+	/**
+	 * get application context
+	 */
 	public Application getAppContext() {
 		return this;
 	}
 
+	/**
+	 * get commands list
+	 */
 	public ArrayList<AbstractCommand> getCommands() {
 		return commands;
 	}
 
-	public ArrayList<EnvironmentVariable> getEnvVars() {
+	/**
+	 * get environment variables list
+	 */
+	public ArrayList<EnvironmentVariable> getEnvironmentVariables() {
 		return envVars;
 	}
 
+	/**
+	 * Disables logging of history
+	 */
 	public void disableHistory() {
 		this.historyEnabled = false;
 	}
 
+	/**
+	 * kill the shell interpreter
+	 */
 	public void terminate() {
 		this.terminate = true;
 	}
 
+	/**
+	 * set start up message
+	 */
 	public void setStartupInfo(String startupInfo) {
 		this.startupInfo = startupInfo;
 	}
 
+	/**
+	 * set prompt string
+	 */
 	public void setPrompt(String prompt) {
 		this.prompt = prompt;
 	}
 
+	/**
+	 * get command history list
+	 */
 	public ArrayList<String> getHistory() {
 		return history;
 	}
@@ -86,6 +113,9 @@ public class Application {
 		System.out.println(startupInfo + "\n");
 	}
 
+	/**
+	 * start the shell interpreter
+	 */
 	public void interpret() throws IOException {
 		init();
 		showStartUpInfo();
@@ -107,7 +137,7 @@ public class Application {
 				exec(cmd);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
-				// e.printStackTrace();
+				e.printStackTrace();
 			}
 		} while (!terminate);
 	}

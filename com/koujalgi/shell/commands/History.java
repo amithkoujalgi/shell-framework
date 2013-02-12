@@ -10,6 +10,7 @@ public class History extends AbstractCommand {
 		super(baseCommand, params);
 	}
 
+	@Override
 	public void setAppContext(Application app) {
 		this.app = app;
 	}
@@ -21,10 +22,11 @@ public class History extends AbstractCommand {
 
 	@Override
 	public void execute() {
-		System.out.println("Command history\n------------------");
-		for (String c : app.getHistory()) {
-			System.out.println(c);
+		String history = "\nCommand history\n------------------\n";
+		for (int i = 0; i < app.getHistory().size() - 1; i++) {
+			history += app.getHistory().get(i) + "\n";
 		}
+		System.out.println(history);
 	}
 
 	@Override

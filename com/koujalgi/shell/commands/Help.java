@@ -23,14 +23,16 @@ public class Help extends AbstractCommand {
 
 	@Override
 	public void execute() {
-		System.out.println("Command Description\n--------------------");
-		for (AbstractCommand c : commands) {
-			if (c instanceof Help) {
+		String help = "\nCommand Description\n--------------------\n";
+		for (int i = 0; i < commands.size(); i++) {
+			if (commands.get(i) instanceof Help) {
 				continue;
-			} else
-				System.out.println(c.getBaseCommand() + "\t\t"
-						+ c.getDescription());
+			} else {
+				help += commands.get(i).getBaseCommand() + "\t\t"
+						+ commands.get(i).getDescription() + "\n";
+			}
 		}
+		System.out.println(help);
 	}
 
 	@Override

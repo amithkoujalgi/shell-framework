@@ -22,10 +22,16 @@ public class ShellIO {
 			System.exit(1);
 		}
 		if (readString == null) {
-			System.out.println("Nothing read! Terminating...");
+			System.out.println("Recieved termination signal. Terminating...");
 			System.exit(1);
 		}
-		return readString;
+		String transformed = readString.replace("\\\\", "\\")
+				.replace("\\N", "\\\\N").replace("\\T", "\\\\T")
+				.replace("\\B", "\\\\B").replace("\\F", "\\\\F")
+				.replace("\\R", "\\\\R").replace("\\U", "\\\\U")
+				.replace("\\'", "\\\\'");
+		return (transformed);
+		// return readString;
 	}
 
 	/**
@@ -36,7 +42,7 @@ public class ShellIO {
 	public static void shutdown() {
 		// Runtime.getRuntime().addShutdownHook(new Thread());
 	}
-	
+
 	public static String readFileContents(String fileName) throws IOException {
 		BufferedReader in = null;
 		String ret = "";
