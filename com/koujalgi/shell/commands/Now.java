@@ -1,5 +1,6 @@
 package com.koujalgi.shell.commands;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import com.koujalgi.shell.core.AbstractCommand;
@@ -15,11 +16,11 @@ public class Now extends AbstractCommand {
 		return "now";
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void execute() {
 		System.out.println("Current system time: "
-				+ new Date().toLocaleString());
+				+ DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+						DateFormat.MEDIUM).format(new Date()));
 	}
 
 	@Override
