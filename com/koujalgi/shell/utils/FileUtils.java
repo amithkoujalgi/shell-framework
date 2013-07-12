@@ -4,7 +4,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -126,18 +125,16 @@ public class FileUtils {
 		return ret;
 	}
 
-	@SuppressWarnings("deprecation")
 	public static String getContentsFromURL(String path) throws Exception {
 		URL u;
 		InputStream is = null;
-		DataInputStream dis;
 		String s;
 		String ret = "";
 		try {
 			u = new URL(path);
 			is = u.openStream(); // throws an IOException
-			dis = new DataInputStream(new BufferedInputStream(is));
-			while ((s = dis.readLine()) != null) {
+			BufferedReader d = new BufferedReader(new InputStreamReader(is));
+			while ((s = d.readLine()) != null) {
 				ret += s + "\n";
 			}
 			System.out.println(s);
