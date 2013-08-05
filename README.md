@@ -46,45 +46,45 @@ Adding a custom command is as easy as pie. It goes like this:
 
 * Lets add a custom command called Test (which is just to demonstrate the functionality of the shell app). So, the class Test looks like this:
 
-	public class Test extends AbstractCommand {
+		public class Test extends AbstractCommand {
 
-		public Test(String baseCommand, int minParamsNeeded) {
-			super(baseCommand, minParamsNeeded);
-		}
-
-		@Override
-		public Result execute() throws Exception {
-			Result r = new Result(this);
-			try {
-				int params = super.getCommandParser().getParamCount();
-				if (params > 0) {
-					super.getApplicationContext().showHelp();
-				} else {
-					r.setResult("This is just a simple test command.");
-				}
-			} catch (Exception e) {
-				r.setError(new Exception("Error while running test command."));
+			public Test(String baseCommand, int minParamsNeeded) {
+				super(baseCommand, minParamsNeeded);
 			}
-			return r;
-		}
 
-		@Override
-		public String getCommandUsageSyntax() {
-			return "test";
-		}
+			@Override
+			public Result execute() throws Exception {
+				Result r = new Result(this);
+				try {
+					int params = super.getCommandParser().getParamCount();
+					if (params > 0) {
+						super.getApplicationContext().showHelp();
+					} else {
+						r.setResult("This is just a simple test command.");
+					}
+				} catch (Exception e) {
+					r.setError(new Exception("Error while running test command."));
+				}
+				return r;
+			}
 
-		@Override
-		public String getCommandDescription() {
-			return "Runs the test command." + "\n"
-					+ "This is a mere dummy command.";
-		}
+			@Override
+			public String getCommandUsageSyntax() {
+				return "test";
+			}
 
-		@Override
-		public String getCommandUsageExamples() {
-			return "test";
-		}
+			@Override
+			public String getCommandDescription() {
+				return "Runs the test command." + "\n"
+						+ "This is a mere dummy command.";
+			}
 
-	}
+			@Override
+			public String getCommandUsageExamples() {
+				return "test";
+			}
+
+		}
 
 * Now that you have a command class Test, lets add this to the shell application.
 
