@@ -116,6 +116,3 @@ Adding a custom command is as easy as pie. It goes like this:
 	Download shell-app.jar from the 'dist' directory and run it in your commandline.
 	
 		java -jar shell-app.jar
-	
-* And you're done! 
-* Run the entry class and voila! You have your shell with your custom commands.
