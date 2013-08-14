@@ -64,6 +64,13 @@ public class Application implements IApplication {
 		return batchCompletionStatus;
 	}
 
+	/**
+	 * If set to true, the application will halt if Result object of the command
+	 * being executed has 'halt'=true, else the app will continue to execute the
+	 * further commands.
+	 * 
+	 * @param haltOnError
+	 */
 	public void setHaltOnError(boolean haltOnError) {
 		this.haltOnError = haltOnError;
 	}
@@ -89,8 +96,10 @@ public class Application implements IApplication {
 		} else {
 			for (EnvironmentVariable v : environmentVariables) {
 				if (var.getKey().equals(v.getKey())) {
-					throw new Exception("Environment variable '" + v.getKey()
-							+ "' already exists.");
+					// throw new Exception("Environment variable '" + v.getKey()
+					// + "' already exists.");
+					v.setValue(var.getValue());
+					return;
 				}
 			}
 			environmentVariables.add(var);
@@ -141,7 +150,8 @@ public class Application implements IApplication {
 			previousResults.add(r);
 		} else {
 			Result r = new Result(null);
-			r.setError(new InvalidCommandException(command));
+			r.setError(new InvalidCommandException("'" + command
+					+ "' is invalid."));
 			previousResults.add(r);
 			logger.logError("Invalid command: '" + command + "'\n");
 			logger.logError("Type in 'help' to view the list of commands supported."
@@ -164,27 +174,27 @@ public class Application implements IApplication {
 
 	private Result executeCommand(AbstractCommand cmd) throws Exception {
 		// set application's context to the command so that the command can make
-		// use of application's features
+		// use of application's features and references
 		cmd.setApplicationContext(this);
 		// invoke command's execute method
-		Result previousResult = null;
+		Result commandExecResult = null;
 		try {
-			previousResult = cmd.execute();
+			commandExecResult = cmd.execute();
 		} catch (Exception e) {
-			previousResult = new Result(cmd);
-			previousResult.setError(e);
+			commandExecResult = new Result(cmd);
+			commandExecResult.setError(e);
 		}
-		if (previousResult != null) {
-			if (previousResult.getError() != null) {
-				logger.logError(previousResult.getError());
+		if (commandExecResult != null) {
+			if (commandExecResult.getError() != null) {
+				logger.logError(commandExecResult.getError());
 			}
-			if (previousResult.getResult() != null) {
-				logger.logInfo(previousResult.getResult());
+			if (commandExecResult.getResult() != null) {
+				logger.logInfo(commandExecResult.getResult());
 			}
 		} else {
 			throw new Exception("Result cannot be null");
 		}
-		return previousResult;
+		return commandExecResult;
 	}
 
 	@Override
@@ -221,8 +231,8 @@ public class Application implements IApplication {
 				logger.logResult(r);
 				if (haltOnError) {
 					if (r != null) {
-						if (r.getError() instanceof Exception) {
-							System.out.println("Breaking execution");
+						if (r.isHalt()) {
+							logger.logError("Encountered error. Breaking execution");
 							break;
 						}
 					}

@@ -40,9 +40,9 @@ public abstract class AbstractLogger {
 		if (previousResult == null) {
 			return;
 		}
-		System.out.println("Saving previous result: [Cmd: "
-				+ previousResult.getCommand() + "] [Result: "
-				+ previousResult.getResult() + "] [Error: "
+		System.out.println("Last Result: " + "\n" + "[Cmd: "
+				+ previousResult.getCommand().getCommandString()
+				+ "] [Result: " + previousResult.getResult() + "] [Error: "
 				+ previousResult.getError() + "]");
 	}
 }

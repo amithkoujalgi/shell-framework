@@ -10,7 +10,6 @@ public abstract class AbstractCommand {
 	private Application applicationContext;
 	private String baseCommand = "";
 	private CommandParser parser;
-
 	private int minParamsNeeded;
 
 	public abstract Result execute() throws Exception;
