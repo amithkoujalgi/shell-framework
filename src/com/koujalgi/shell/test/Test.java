@@ -1,4 +1,4 @@
-package com.koujalgi.shell.main;
+package com.koujalgi.shell.test;
 
 import com.koujalgi.shell.entities.Result;
 import com.koujalgi.shell.interfaces.AbstractCommand;
