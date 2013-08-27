@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="build_and_run" name="Create Runnable Jar" basedir="../">
+
+	<target name="build_and_run">
+		<dirname property="projectRoot" file="${ant.file.project.root}" />
+		<echo message="Project root directory is: ${projectRoot}" />
+		<echo message="Config file is: ${configFile}" />
+		<property name="distDir" value="${projectRoot}/dist" />
+		<property name="binDir" value="${projectRoot}/bin" />
+		<echo message="Temp directory is: ${distDir}" />
+		<antcall target="compile_source" />
+		<antcall target="create_jar" />
+		<antcall target="run_app" />
+	</target>
+
+	<target name="compile_source">
+		<echo message="Emptying ${binDir} directory" />
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${binDir}" includes="**/*" />
+		</delete>
+		<echo message="Compiling source..." />
+		<path id="javac.lib">
+			<fileset dir="${projectRoot}/lib">
+				<include name="*.jar" />
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+		<echo message="Creating bin directory ${binDir}" />
+		<mkdir dir="${binDir}" />
+		<javac fork="true" includeantruntime="yes" debug="on" destdir="${binDir}">
+			<src path="${projectRoot}/src" />
+			<classpath refid="javac.lib" />
+		</javac>
+	</target>
+
+	<target name="create_jar">
+		<echo message="Emptying ${distDir} directory" />
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${distDir}" includes="**/*" />
+		</delete>
+		<echo message="Creating temp directory ${distDir}" />
+		<mkdir dir="${distDir}" />
+		<jar destfile="${distDir}/app.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="com.koujalgi.shell.test.TestInterpreter" />
+				<attribute name="Class-Path" value="." />
+			</manifest>
+			<fileset dir="${projectRoot}/bin" />
+			<!-- zipfilesetexcludes="META-INF/*.SF" src="${projectRoot}/lib/commons-logging-1.1.1.jar" />
+			<zipfileset excludes="META-INF/*.SF" src="${projectRoot}/lib/log4j-1.2.17.jar" />-->
+		</jar>
+	</target>
+
+	<target name="run_app">
+		<echo message="Application jarfile ${distDir}/app.jar" />
+		<echo message="You may now run this command in your command prompt to start the app: " />
+		<echo message="java -jar ${distDir}/app.jar" />
+		<!--<echo message="Starting app..." />
+		<java jar="${distDir}/app.jar" fork="true">
+			<arg line="${configFile}" />
+		</java>-->
+	</target>
+
+</project>
