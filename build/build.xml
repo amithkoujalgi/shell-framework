@@ -7,9 +7,10 @@
 		<echo message="Config file is: ${configFile}" />
 		<property name="distDir" value="${projectRoot}/dist" />
 		<property name="binDir" value="${projectRoot}/bin" />
-		<echo message="Temp directory is: ${distDir}" />
+		<property name="javadocDir" value="${projectRoot}/javadoc" />
 		<antcall target="compile_source" />
 		<antcall target="create_jar" />
+		<antcall target="create_javadoc" />
 		<antcall target="run_app" />
 	</target>
 
@@ -49,6 +50,16 @@
 			<!-- zipfilesetexcludes="META-INF/*.SF" src="${projectRoot}/lib/commons-logging-1.1.1.jar" />
 			<zipfileset excludes="META-INF/*.SF" src="${projectRoot}/lib/log4j-1.2.17.jar" />-->
 		</jar>
+	</target>
+
+	<target name="create_javadoc">
+		<echo message="Emptying ${javadocDir} directory" />
+		<delete includeemptydirs="true" failonerror="false">
+			<fileset dir="${binDir}" includes="**/*" />
+		</delete>
+		<echo message="Creating javadoc directory ${javadocDir}" />
+		<mkdir dir="${javadocDir}" />
+		<javadoc access="public" author="true" destdir="${javadocDir}" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.7" sourcepath="${projectRoot}/src" splitindex="true" use="true" version="true" />
 	</target>
 
 	<target name="run_app">
