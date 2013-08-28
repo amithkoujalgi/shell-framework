@@ -55,7 +55,7 @@
 	<target name="create_javadoc">
 		<echo message="Emptying ${javadocDir} directory" />
 		<delete includeemptydirs="true" failonerror="false">
-			<fileset dir="${binDir}" includes="**/*" />
+			<fileset dir="${javadocDir}" includes="**/*" />
 		</delete>
 		<echo message="Creating javadoc directory ${javadocDir}" />
 		<mkdir dir="${javadocDir}" />
